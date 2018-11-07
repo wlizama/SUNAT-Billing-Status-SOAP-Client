@@ -1,0 +1,8 @@
+{
+    "tipos_docs": [
+        { "codigo": "01", "descripcion": "Factura" },
+        { "codigo": "03", "descripcion": "Boleta de Venta" },
+        { "codigo": "07", "descripcion": "Nota de Credito" },
+        { "codigo": "08", "descripcion": "Nota de Debito" }
+    ]
+}
