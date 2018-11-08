@@ -1,11 +1,30 @@
 import json
-from DAO import Empresa, ClaveSol, TipoDocumento
 import os
+from DAO import Empresa, ClaveSol, TipoDocumento
+import zeep
+from zeep.wsse.username import UsernameToken
+
 
 LINE_SEPARADOR = "-"
+SUNAT_SOAT_WSDL = "https://www.sunat.gob.pe/ol-it-wsconscpegem/billConsultService?wsdl"
+
+str_inputs = []
+
 
 def lineSeparator(len):
     return LINE_SEPARADOR * len
+
+
+def printValues(func):
+    def wrapper(*args, **kwargs):
+        value = func(*args, **kwargs)
+        os.system('cls')
+        str = "{}{}".format(args[0], value)
+        str_inputs.append(str)
+        print("\n".join(str_inputs))
+        return value
+
+    return wrapper
 
 
 def getListaEmpresas():
@@ -42,7 +61,8 @@ def getListaTiposDocs():
     return lista_tipos_docs
 
 
-def getEmpresaSeleccionada():
+@printValues
+def getEmpresaSeleccionada(str_msg):
     print("""\
     \nLISTA DE EMPRESAS\
     \n{0}\
@@ -57,12 +77,13 @@ def getEmpresaSeleccionada():
             empresa.ruc,
             empresa.razon_social))
 
-    indx_empresa_seleccionada = int(input("Empresa: ")) - 1
+    indx_empresa_seleccionada = int(input(str_msg)) - 1
 
     return empresas[indx_empresa_seleccionada]
 
 
-def getTipoDocSeleccionado():
+@printValues
+def getTipoDocSeleccionado(str_msg):
     print("""\
     \nLISTA TIPOS DE DOCUMENTOS\
     \n{0}\
@@ -77,45 +98,46 @@ def getTipoDocSeleccionado():
             tipo_doc.codigo,
             tipo_doc.descripcion))
 
-    indx_tipos_doc_seleccionado = int(input("Tipo documento: ")) - 1
+    indx_tipos_doc_seleccionado = int(input(str_msg)) - 1
 
     return tipos_docs[indx_tipos_doc_seleccionado]
 
 
+@printValues
+def getSerieDoc(str_msg):
+    return input(str_msg)
+
+
+@printValues
+def getNumeroDoc(str_msg):
+    return int(input(str_msg))
+
+
 def main():
-    empresa_seleccionada = getEmpresaSeleccionada()
-    
-    os.system('cls')  # windows OS
-    
-    print("Empresa: {0}".format(empresa_seleccionada))
+    # os.system('cls')
 
-    tipo_doc_seleccionado = getTipoDocSeleccionado()
+    empresa = getEmpresaSeleccionada("Empresa: ")
+    tipo_doc = getTipoDocSeleccionado("Tipo de Documento: ")
+    serie = getSerieDoc("Serie: ").upper()
+    numero = getNumeroDoc("Número: ")
 
-    os.system('cls')  # windows OS
+    token_user = "{}{}".format(empresa.ruc, empresa.clave_sol.usuario)
+    token_password = empresa.clave_sol.contrasenha
 
-    print("Empresa: {0}".format(empresa_seleccionada))
-    print("Tipo Documento: {0}".format(tipo_doc_seleccionado))
+    client = zeep.Client(
+    SUNAT_SOAT_WSDL,
+        wsse=UsernameToken(token_user, token_password)
+    )
 
-    serie = input("Serie: ")
+    response = client.service.getStatus(
+        empresa.ruc,
+        tipo_doc.codigo,
+        serie,
+        numero
+    )
 
-    os.system('cls')  # windows OS
+    print(response)
 
-    print("Empresa: {0}".format(empresa_seleccionada))
-    print("Tipo Documento: {0}".format(tipo_doc_seleccionado))
-    print("Serie: {0}".format(serie))
-
-    numero = int(input("Número: "))
-
-    os.system('cls')  # windows OS
-
-    print("Empresa: {0}".format(empresa_seleccionada))
-    print("Tipo Documento: {0}".format(tipo_doc_seleccionado))
-    print("Serie: {0}".format(serie))
-    print("Número: {0}".format(numero))
-
-
-    # print(empresa_seleccionada.clave_sol.usuario)
-    # print(empresa_seleccionada.clave_sol.contrasenha)
 
 if __name__ == '__main__':
     main()
