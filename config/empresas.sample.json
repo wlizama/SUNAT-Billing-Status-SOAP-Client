@@ -1,0 +1,12 @@
+{
+    "empresas" : [
+        {
+            "razon_social" : "Mi Super Empresa S.A.C",
+            "ruc": "12345678974",
+            "clave_sol" : {
+                "usuario": "superusuario",
+                "contrasenha": "supercontrasenha"
+            }
+        }
+    ]
+}
