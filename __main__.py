@@ -12,7 +12,7 @@ def lineSeparator(len):
     return LINE_SEPARADOR * len
 
 
-def printValues(func):
+def printInputValues(func):
     def wrapper(*args, **kwargs):
         value = func(*args, **kwargs)
         os.system('cls')
@@ -58,8 +58,8 @@ def getListaTiposDocs():
     return lista_tipos_docs
 
 
-@printValues
-def getEmpresaSeleccionada(str_msg):
+@printInputValues
+def getInputEmpresa(str_msg):
     print("""\
     \nLISTA DE EMPRESAS\
     \n{0}\
@@ -79,8 +79,8 @@ def getEmpresaSeleccionada(str_msg):
     return empresas[indx_empresa_seleccionada]
 
 
-@printValues
-def getTipoDocSeleccionado(str_msg):
+@printInputValues
+def getInputTipoDoc(str_msg):
     print("""\
     \nLISTA TIPOS DE DOCUMENTOS\
     \n{0}\
@@ -100,23 +100,23 @@ def getTipoDocSeleccionado(str_msg):
     return tipos_docs[indx_tipos_doc_seleccionado]
 
 
-@printValues
-def getSerieDoc(str_msg):
+@printInputValues
+def getInputSerieDoc(str_msg):
     return input(str_msg)
 
 
-@printValues
-def getNumeroDoc(str_msg):
+@printInputValues
+def getInputNumeroDoc(str_msg):
     return int(input(str_msg))
 
 
 def main():
     # os.system('cls')
 
-    empresa = getEmpresaSeleccionada("Empresa: ")
-    tipo_doc = getTipoDocSeleccionado("Tipo de Documento: ")
-    serie = getSerieDoc("Serie: ").upper()
-    numero = getNumeroDoc("Número: ")
+    empresa = getInputEmpresa("Empresa: ")
+    tipo_doc = getInputTipoDoc("Tipo de Documento: ")
+    serie = getInputSerieDoc("Serie: ").upper()
+    numero = getInputNumeroDoc("Número: ")
 
     service = SUNATServiceClient(
         empresa,
@@ -125,7 +125,7 @@ def main():
         numero
     )
 
-    service.getStatus()
+    service.printStatus()
 
 
 if __name__ == '__main__':

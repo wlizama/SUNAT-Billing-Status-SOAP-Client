@@ -53,7 +53,7 @@ class SUNATServiceClient():
             wsse=UsernameToken(token_user, token_password)
         )
 
-    def getStatus(self):
+    def printStatus(self):
         self.connect()
         
         response = self.client.service.getStatus(
@@ -63,11 +63,11 @@ class SUNATServiceClient():
             self.numero
         )
 
-        self._printResponse(response)
+        print(self._getFormatResponse(response))
 
-    def _printResponse(self, response):
-        print("""\
+    def _getFormatResponse(self, response):
+        return """\
         \nRespuesta:\
         \n  Status Code: {0}\
         \n  Status Message: {1}
-        """.format(response.statusCode, response.statusMessage))
+        """.format(response.statusCode, response.statusMessage)
