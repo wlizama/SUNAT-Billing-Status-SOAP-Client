@@ -1,12 +1,9 @@
 import json
 import os
 from DAO import Empresa, ClaveSol, TipoDocumento
-import zeep
-from zeep.wsse.username import UsernameToken
-
+from SUNATServiceClient import SUNATServiceClient
 
 LINE_SEPARADOR = "-"
-SUNAT_SOAT_WSDL = "https://www.sunat.gob.pe/ol-it-wsconscpegem/billConsultService?wsdl"
 
 str_inputs = []
 
@@ -121,22 +118,14 @@ def main():
     serie = getSerieDoc("Serie: ").upper()
     numero = getNumeroDoc("Número: ")
 
-    token_user = "{}{}".format(empresa.ruc, empresa.clave_sol.usuario)
-    token_password = empresa.clave_sol.contrasenha
-
-    client = zeep.Client(
-    SUNAT_SOAT_WSDL,
-        wsse=UsernameToken(token_user, token_password)
-    )
-
-    response = client.service.getStatus(
-        empresa.ruc,
-        tipo_doc.codigo,
+    service = SUNATServiceClient(
+        empresa,
+        tipo_doc,
         serie,
         numero
     )
 
-    print(response)
+    service.getStatus()
 
 
 if __name__ == '__main__':
