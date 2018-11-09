@@ -1,6 +1,6 @@
 import zeep
 from zeep.wsse.username import UsernameToken
-
+from halo import Halo
 
 class SUNATServiceClient():
     _SUNAT_SOAP_WSDL = "https://www.sunat.gob.pe/ol-it-wsconscpegem/billConsultService?wsdl"
@@ -53,6 +53,7 @@ class SUNATServiceClient():
             wsse=UsernameToken(token_user, token_password)
         )
 
+    @Halo(text="Consultando ando ...", spinner="clock")
     def getStatus(self):
         self.connect()
         

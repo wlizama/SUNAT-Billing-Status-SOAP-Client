@@ -2,8 +2,6 @@ import json
 import os
 from DAO import Empresa, ClaveSol, TipoDocumento
 from SUNATServiceClient import SUNATServiceClient
-from yaspin import yaspin
-from yaspin.spinners import Spinners
 
 LINE_SEPARADOR = "-"
 
@@ -120,9 +118,6 @@ def main():
     serie = getInputSerieDoc("Serie: ").upper()
     numero = getInputNumeroDoc("Número: ")
 
-    spinner = yaspin(Spinners.earth, text="Consultando...")
-    spinner.start()
-
     service = SUNATServiceClient(
         empresa,
         tipo_doc,
@@ -131,7 +126,6 @@ def main():
     )
     
     service.getStatus()
-    spinner.stop()
 
 
 if __name__ == '__main__':
