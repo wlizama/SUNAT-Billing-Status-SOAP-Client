@@ -53,7 +53,7 @@ class SUNATServiceClient():
             wsse=UsernameToken(token_user, token_password)
         )
 
-    def printStatus(self):
+    def getStatus(self):
         self.connect()
         
         response = self.client.service.getStatus(
