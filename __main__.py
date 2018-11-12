@@ -6,6 +6,11 @@ import re
 
 LINE_SEPARADOR = "-"
 
+CONFIG_FILES = {
+    "empresas": "./config/empresas.json",
+    "tipos_docs": "./config/tipos_docs.json"
+}
+
 str_inputs = []
 
 # Helpers
@@ -26,10 +31,19 @@ def printInputValues(func):
     return wrapper
 
 
-def getListaEmpresas():
-    lista_empresas = []
+def checkIfConfigFilesExists():
+    for ind, val in CONFIG_FILES.items():
+        if not os.path.exists(val):
+            print("ERROR. No se ha podido encontrar el archivo {}"
+                  .format(val))
+            exit()
 
-    data = json.loads(open("config/empresas.json").read())
+
+def getListaEmpresas():
+
+    lista_empresas = []
+    data = json.loads(open(CONFIG_FILES["empresas"]).read())
+    
     for empresa in data["empresas"]:
         emp = Empresa(
             empresa["razon_social"],
@@ -48,7 +62,7 @@ def getListaEmpresas():
 def getListaTiposDocs():
     lista_tipos_docs = []
 
-    data = json.loads(open("config/tipos_docs.json").read())
+    data = json.loads(open(CONFIG_FILES["tipos_docs"]).read())
     for tipo_doc in data["tipos_docs"]:
         tdoc = TipoDocumento(
             tipo_doc["codigo"],
@@ -170,6 +184,8 @@ def getInputNumeroDoc(str_msg):
 
 def main():
     # os.system('cls')
+
+    checkIfConfigFilesExists()
 
     empresa = getInputEmpresa("Empresa: ")
     tipo_doc = getInputTipoDoc("Tipo de Documento: ")
