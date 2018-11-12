@@ -45,26 +45,34 @@ class SUNATServiceClient():
         self._numero = value
 
     def connect(self):
-        token_user = "{}{}".format(self.empresa.ruc, self.empresa.clave_sol.usuario)
-        token_password = self.empresa.clave_sol.contrasenha
+        try:
+            token_user = "{}{}".format(self.empresa.ruc, self.empresa.clave_sol.usuario)
+            token_password = self.empresa.clave_sol.contrasenha
 
-        self.client = zeep.Client(
-            self._SUNAT_SOAP_WSDL,
-            wsse=UsernameToken(token_user, token_password)
-        )
+            self.client = zeep.Client(
+                self._SUNAT_SOAP_WSDL,
+                wsse=UsernameToken(token_user, token_password)
+            )
+        except (ConnectionResetError, ConnectionError):
+            print("Error al establecer la conección")
+            raise
 
     @Halo(text="Consultando ando ...", spinner="clock")
     def getStatus(self):
         self.connect()
         
-        response = self.client.service.getStatus(
-            self.empresa.ruc,
-            self.tipo_doc.codigo,
-            self.serie,
-            self.numero
-        )
+        try:
+            response = self.client.service.getStatus(
+                self.empresa.ruc,
+                self.tipo_doc.codigo,
+                self.serie,
+                self.numero
+            )
 
-        print(self._getFormatResponse(response))
+            print(self._getFormatResponse(response))
+        except (ConnectionResetError, ConnectionError):
+            print("Sucedió un error en método getStatus")
+            raise
 
     def _getFormatResponse(self, response):
         return """\
