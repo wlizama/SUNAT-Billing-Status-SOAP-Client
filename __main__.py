@@ -2,6 +2,7 @@ import json
 import os
 from DAO import Empresa, ClaveSol, TipoDocumento
 from SUNATServiceClient import SUNATServiceClient
+import re
 
 LINE_SEPARADOR = "-"
 
@@ -134,12 +135,37 @@ def getInputTipoDoc(str_msg):
 
 @printInputValues
 def getInputSerieDoc(str_msg):
-    return input(str_msg)
+    
+    is_error = True
+    while is_error:
+        is_error = True
+        str_input = input(str_msg)
+        match = re.fullmatch(r"[a-zA-Z]\d{3}", str_input)
+
+        if match == None:
+            print("‼ La serie no es correcta")
+        else:
+            is_error = False
+    
+    return str_input
 
 
 @printInputValues
 def getInputNumeroDoc(str_msg):
-    return int(input(str_msg))
+    is_error = True
+    num = 0
+    while is_error:
+        is_error = True
+        try:
+            num = int(input(str_msg))
+            if num <= 0:
+                print("‼ El valor debe ser mayor a Cero ( 0 ).")
+            else:
+                is_error = False
+        except ValueError as verr:
+            print("‼ El valor ingresado no es númerico.")
+
+    return num
 
 
 def main():
