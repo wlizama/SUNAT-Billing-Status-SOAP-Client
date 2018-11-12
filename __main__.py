@@ -7,6 +7,7 @@ LINE_SEPARADOR = "-"
 
 str_inputs = []
 
+# Helpers
 
 def lineSeparator(len):
     return LINE_SEPARADOR * len
@@ -60,6 +61,10 @@ def getListaTiposDocs():
 
 @printInputValues
 def getInputEmpresa(str_msg):
+
+    is_error = True
+    empresa_seleccionada = None
+            
     print("""\
     \nLISTA DE EMPRESAS\
     \n{0}\
@@ -74,13 +79,28 @@ def getInputEmpresa(str_msg):
             empresa.ruc,
             empresa.razon_social))
 
-    indx_empresa_seleccionada = int(input(str_msg)) - 1
+    while is_error:
+        is_error = True
+        try:
+            indx_empresa_seleccionada = int(input(str_msg))
+            if indx_empresa_seleccionada > 0:
+                empresa_seleccionada = empresas[indx_empresa_seleccionada - 1]
+                is_error = False
+            else:
+                print("‼ El valor debe ser mayor a Cero ( 0 ).")
+        except ValueError as verr:
+            print("‼ El valor ingresado no es númerico.")
+        except IndexError as ierr:
+            print("‼ Debe seleccionar una de las empresas en la lista.")
 
-    return empresas[indx_empresa_seleccionada]
-
+    return empresa_seleccionada
 
 @printInputValues
 def getInputTipoDoc(str_msg):
+
+    is_error = True
+    tipo_doc_seleccionado = None
+
     print("""\
     \nLISTA TIPOS DE DOCUMENTOS\
     \n{0}\
@@ -95,9 +115,21 @@ def getInputTipoDoc(str_msg):
             tipo_doc.codigo,
             tipo_doc.descripcion))
 
-    indx_tipos_doc_seleccionado = int(input(str_msg)) - 1
+    while is_error:
+        is_error = True
+        try:
+            indx_tipo_doc_seleccionado = int(input(str_msg))
+            if indx_tipo_doc_seleccionado > 0:
+                tipo_doc_seleccionado = tipos_docs[indx_tipo_doc_seleccionado - 1]
+                is_error = False
+            else:
+                print("‼ El valor debe ser mayor a Cero ( 0 ).")
+        except ValueError as verr:
+            print("‼ El valor ingresado no es númerico.")
+        except IndexError as ierr:
+            print("‼ Debe seleccionar uno de los documentos en la lista.")
 
-    return tipos_docs[indx_tipos_doc_seleccionado]
+    return tipo_doc_seleccionado
 
 
 @printInputValues
