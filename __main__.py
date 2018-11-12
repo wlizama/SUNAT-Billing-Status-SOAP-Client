@@ -1,48 +1,16 @@
-import json
-import os
 from DAO import Empresa, ClaveSol, TipoDocumento
 from SUNATServiceClient import SUNATServiceClient
-import re
-
-LINE_SEPARADOR = "-"
-
-CONFIG_FILES = {
-    "empresas": "./config/empresas.json",
-    "tipos_docs": "./config/tipos_docs.json"
-}
-
-str_inputs = []
-
-# Helpers
-
-def lineSeparator(len):
-    return LINE_SEPARADOR * len
-
-
-def printInputValues(func):
-    def wrapper(*args, **kwargs):
-        value = func(*args, **kwargs)
-        os.system('cls')
-        str = "{}{}".format(args[0], value)
-        str_inputs.append(str)
-        print("\n".join(str_inputs))
-        return value
-
-    return wrapper
-
-
-def checkIfConfigFilesExists():
-    for ind, val in CONFIG_FILES.items():
-        if not os.path.exists(val):
-            print("ERROR. No se ha podido encontrar el archivo {}"
-                  .format(val))
-            exit()
+from helpers import (lineSeparator,
+                     printInputValues,
+                     getConfigData,
+                     checkIfConfigFilesExists,
+                     fullMatchRExp)
 
 
 def getListaEmpresas():
 
     lista_empresas = []
-    data = json.loads(open(CONFIG_FILES["empresas"]).read())
+    data = getConfigData("empresas")
     
     for empresa in data["empresas"]:
         emp = Empresa(
@@ -62,7 +30,7 @@ def getListaEmpresas():
 def getListaTiposDocs():
     lista_tipos_docs = []
 
-    data = json.loads(open(CONFIG_FILES["tipos_docs"]).read())
+    data = getConfigData("tipos_docs")
     for tipo_doc in data["tipos_docs"]:
         tdoc = TipoDocumento(
             tipo_doc["codigo"],
@@ -154,7 +122,7 @@ def getInputSerieDoc(str_msg):
     while is_error:
         is_error = True
         str_input = input(str_msg)
-        match = re.fullmatch(r"[a-zA-Z]\d{3}", str_input)
+        match = fullMatchRExp(r"[a-zA-Z]\d{3}", str_input)
 
         if match == None:
             print("‼ La serie no es correcta")
@@ -183,7 +151,6 @@ def getInputNumeroDoc(str_msg):
 
 
 def main():
-    # os.system('cls')
 
     checkIfConfigFilesExists()
 
