@@ -4,7 +4,8 @@ from helpers import (lineSeparator,
                      printInputValues,
                      getConfigData,
                      checkIfConfigFilesExists,
-                     fullMatchRExp)
+                     fullMatchRExp,
+                     printSingleTable)
 
 
 def getListaEmpresas():
@@ -47,20 +48,17 @@ def getInputEmpresa(str_msg):
 
     is_error = True
     empresa_seleccionada = None
-            
-    print("""\
-    \nLISTA DE EMPRESAS\
-    \n{0}\
-    \n # | RUC         | Empresa\
-    \n{0}\
-    """.format(lineSeparator(50)))
-
     empresas = getListaEmpresas()
+
+    data_table = []
+    data_table.append(["#", "RUC", "Razón Social"])
     for empresa in empresas:
-        print(" {} | {} | {}".format(
+        data_table.append([
             empresas.index(empresa) + 1,
             empresa.ruc,
-            empresa.razon_social))
+            empresa.razon_social
+        ])
+    printSingleTable(data_table, " LISTA DE EMPRESAS ")
 
     while is_error:
         is_error = True
@@ -83,20 +81,17 @@ def getInputTipoDoc(str_msg):
 
     is_error = True
     tipo_doc_seleccionado = None
-
-    print("""\
-    \nLISTA TIPOS DE DOCUMENTOS\
-    \n{0}\
-    \n # |  Cod  | Descripción\
-    \n{0}\
-    """.format(lineSeparator(80)))
-
     tipos_docs = getListaTiposDocs()
+
+    data_table = []
+    data_table.append(["#", "Cod", "Descripción"])
     for tipo_doc in tipos_docs:
-        print(" {} |  {}   | {}".format(
+        data_table.append([
             tipos_docs.index(tipo_doc) + 1,
             tipo_doc.codigo,
-            tipo_doc.descripcion))
+            tipo_doc.descripcion
+        ])
+    printSingleTable(data_table, " LISTA TIPOS DE DOCUMENTOS ")
 
     while is_error:
         is_error = True

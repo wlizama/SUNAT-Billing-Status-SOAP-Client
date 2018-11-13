@@ -2,6 +2,7 @@ import json
 import os
 import platform
 import re
+from terminaltables import SingleTable
 
 
 _CONFIG_FILES = {
@@ -59,3 +60,13 @@ def clearConsole():
         clear_command = "cls"
     
     os.system(clear_command)
+
+
+def printSingleTable(data, title):
+    try:
+        table = SingleTable(data)
+        table.title = title
+        print(table.table)
+    except:
+        print("Sucedió un error imprimiendo datos en tabla.")
+        exit()
