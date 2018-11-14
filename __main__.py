@@ -13,33 +13,42 @@ def getListaEmpresas():
     lista_empresas = []
     data = getConfigData("empresas")
     
-    for empresa in data["empresas"]:
-        emp = Empresa(
-            empresa["razon_social"],
-            empresa["ruc"],
-            ClaveSol(
-                empresa["clave_sol"]["usuario"],
-                empresa["clave_sol"]["contrasenha"]
+    if len(data["empresas"]) > 0:
+        for empresa in data["empresas"]:
+            emp = Empresa(
+                empresa["razon_social"],
+                empresa["ruc"],
+                ClaveSol(
+                    empresa["clave_sol"]["usuario"],
+                    empresa["clave_sol"]["contrasenha"]
+                )
             )
-        )
 
-        lista_empresas.append(emp)
-    
+            lista_empresas.append(emp)
+    else:
+        print("‼ No existen empresas configuradas.")
+        exit()
+
     return lista_empresas
 
 
 def getListaTiposDocs():
+
     lista_tipos_docs = []
-
     data = getConfigData("tipos_docs")
-    for tipo_doc in data["tipos_docs"]:
-        tdoc = TipoDocumento(
-            tipo_doc["codigo"],
-            tipo_doc["descripcion"]
-        )
 
-        lista_tipos_docs.append(tdoc)
-    
+    if len(data["tipos_docs"]) > 0:
+        for tipo_doc in data["tipos_docs"]:
+            tdoc = TipoDocumento(
+                tipo_doc["codigo"],
+                tipo_doc["descripcion"]
+            )
+
+            lista_tipos_docs.append(tdoc)
+    else:
+        print("‼ No existen Tipos de documentos configurados.")
+        exit()
+
     return lista_tipos_docs
 
 
@@ -50,25 +59,30 @@ def getInputEmpresa(str_msg):
     empresa_seleccionada = None
     empresas = getListaEmpresas()
 
-    data_table = []
-    data_table.append(["#", "RUC", "Razón Social"])
-    for empresa in empresas:
-        data_table.append([
-            empresas.index(empresa) + 1,
-            empresa.ruc,
-            empresa.razon_social
-        ])
-    printSingleTable(data_table, " LISTA DE EMPRESAS ")
+    if len(empresas) > 1:
+        data_table = []
+        data_table.append(["#", "RUC", "Razón Social"])
+        for empresa in empresas:
+            data_table.append([
+                empresas.index(empresa) + 1,
+                empresa.ruc,
+                empresa.razon_social
+            ])
+        printSingleTable(data_table, " LISTA DE EMPRESAS ")
 
     while is_error:
         is_error = True
         try:
-            indx_empresa_seleccionada = int(input(str_msg))
-            if indx_empresa_seleccionada > 0:
-                empresa_seleccionada = empresas[indx_empresa_seleccionada - 1]
-                is_error = False
+            if len(empresas) > 1:
+                indx_empresa_seleccionada = int(input(str_msg))
+                if indx_empresa_seleccionada > 0:
+                    empresa_seleccionada = empresas[indx_empresa_seleccionada - 1]
+                    is_error = False
+                else:
+                    print("‼ El valor debe ser mayor a Cero ( 0 ).")
             else:
-                print("‼ El valor debe ser mayor a Cero ( 0 ).")
+                empresa_seleccionada = empresas[0]
+                is_error = False
         except ValueError as verr:
             print("‼ El valor ingresado no es númerico.")
         except IndexError as ierr:
@@ -83,25 +97,30 @@ def getInputTipoDoc(str_msg):
     tipo_doc_seleccionado = None
     tipos_docs = getListaTiposDocs()
 
-    data_table = []
-    data_table.append(["#", "Cod", "Descripción"])
-    for tipo_doc in tipos_docs:
-        data_table.append([
-            tipos_docs.index(tipo_doc) + 1,
-            tipo_doc.codigo,
-            tipo_doc.descripcion
-        ])
-    printSingleTable(data_table, " LISTA TIPOS DE DOCUMENTOS ")
+    if len(tipos_docs) > 1:
+        data_table = []
+        data_table.append(["#", "Cod", "Descripción"])
+        for tipo_doc in tipos_docs:
+            data_table.append([
+                tipos_docs.index(tipo_doc) + 1,
+                tipo_doc.codigo,
+                tipo_doc.descripcion
+            ])
+        printSingleTable(data_table, " LISTA TIPOS DE DOCUMENTOS ")
 
     while is_error:
         is_error = True
         try:
-            indx_tipo_doc_seleccionado = int(input(str_msg))
-            if indx_tipo_doc_seleccionado > 0:
-                tipo_doc_seleccionado = tipos_docs[indx_tipo_doc_seleccionado - 1]
-                is_error = False
+            if len(tipos_docs) > 1:
+                indx_tipo_doc_seleccionado = int(input(str_msg))
+                if indx_tipo_doc_seleccionado > 0:
+                    tipo_doc_seleccionado = tipos_docs[indx_tipo_doc_seleccionado - 1]
+                    is_error = False
+                else:
+                    print("‼ El valor debe ser mayor a Cero ( 0 ).")
             else:
-                print("‼ El valor debe ser mayor a Cero ( 0 ).")
+                tipo_doc_seleccionado = tipos_docs[0]
+                is_error = False
         except ValueError as verr:
             print("‼ El valor ingresado no es númerico.")
         except IndexError as ierr:
