@@ -71,3 +71,8 @@ def printSingleTable(data, title, heading_row=True):
     except:
         print("Sucedió un error imprimiendo datos en tabla.")
         exit()
+
+
+def preInit():
+    clearConsole()
+    checkIfConfigFilesExists()

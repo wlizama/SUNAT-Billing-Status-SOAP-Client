@@ -1,7 +1,6 @@
 from DAO import Empresa, ClaveSol, TipoDocumento
 from SUNATServiceClient import SUNATServiceClient
-from helpers import (clearConsole,
-                     lineSeparator,
+from helpers import (preInit,
                      printInputValues,
                      getConfigData,
                      checkIfConfigFilesExists,
@@ -176,8 +175,7 @@ def printStatusResponse(data_rpt):
 def main():
 
     try:
-        clearConsole()
-        checkIfConfigFilesExists()
+        preInit()
 
         empresa = getInputEmpresa("Empresa: ")
         tipo_doc = getInputTipoDoc("Tipo de Documento: ")
