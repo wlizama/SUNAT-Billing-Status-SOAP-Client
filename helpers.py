@@ -3,6 +3,11 @@ import os
 import platform
 import re
 from terminaltables import SingleTable
+from colorama import init
+from termcolor import colored
+
+
+init()
 
 
 _CONFIG_FILES = {
@@ -71,6 +76,18 @@ def printSingleTable(data, title, heading_row=True):
     except:
         print("Sucedió un error imprimiendo datos en tabla.")
         exit()
+
+
+def printOnConsole(str, type=""):
+    color = "white"
+    if type.lower() == "w":
+        color = "yellow"
+    elif type.lower() == "i":
+        color = "blue"
+    elif type.lower() == "e":
+        color = "red"
+
+    print(colored(str, color))
 
 
 def preInit():

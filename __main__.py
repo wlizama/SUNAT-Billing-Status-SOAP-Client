@@ -5,7 +5,8 @@ from helpers import (preInit,
                      getConfigData,
                      checkIfConfigFilesExists,
                      fullMatchRExp,
-                     printSingleTable)
+                     printSingleTable,
+                     printOnConsole)
 
 
 def getListaEmpresas():
@@ -26,7 +27,7 @@ def getListaEmpresas():
 
             lista_empresas.append(emp)
     else:
-        print("‼ No existen empresas configuradas.")
+        printOnConsole("No existen empresas configuradas.", "e")
         exit()
 
     return lista_empresas
@@ -46,7 +47,7 @@ def getListaTiposDocs():
 
             lista_tipos_docs.append(tdoc)
     else:
-        print("‼ No existen Tipos de documentos configurados.")
+        printOnConsole("No existen Tipos de documentos configurados.", "e")
         exit()
 
     return lista_tipos_docs
@@ -79,14 +80,14 @@ def getInputEmpresa(str_msg):
                     empresa_seleccionada = empresas[indx_empresa_seleccionada - 1]
                     is_error = False
                 else:
-                    print("‼ El valor debe ser mayor a Cero ( 0 ).")
+                    printOnConsole("El valor debe ser mayor a Cero ( 0 ).", "w")
             else:
                 empresa_seleccionada = empresas[0]
                 is_error = False
         except ValueError as verr:
-            print("‼ El valor ingresado no es númerico.")
+            printOnConsole("El valor ingresado no es númerico.", "w")
         except IndexError as ierr:
-            print("‼ Debe seleccionar una de las empresas en la lista.")
+            printOnConsole("Debe seleccionar una de las empresas en la lista.", "w")
 
     return empresa_seleccionada
 
@@ -117,14 +118,14 @@ def getInputTipoDoc(str_msg):
                     tipo_doc_seleccionado = tipos_docs[indx_tipo_doc_seleccionado - 1]
                     is_error = False
                 else:
-                    print("‼ El valor debe ser mayor a Cero ( 0 ).")
+                    printOnConsole("El valor debe ser mayor a Cero ( 0 ).", "w")
             else:
                 tipo_doc_seleccionado = tipos_docs[0]
                 is_error = False
         except ValueError as verr:
-            print("‼ El valor ingresado no es númerico.")
+            printOnConsole("El valor ingresado no es númerico.", "w")
         except IndexError as ierr:
-            print("‼ Debe seleccionar uno de los documentos en la lista.")
+            printOnConsole("Debe seleccionar uno de los documentos en la lista.", "w")
 
     return tipo_doc_seleccionado
 
@@ -139,7 +140,7 @@ def getInputSerieDoc(str_msg):
         match = fullMatchRExp(r"[a-zA-Z]\d{3}", str_input)
 
         if match == None:
-            print("‼ La serie no es correcta")
+            printOnConsole("La serie no es correcta", "w")
         else:
             is_error = False
     
@@ -155,11 +156,11 @@ def getInputNumeroDoc(str_msg):
         try:
             num = int(input(str_msg))
             if num <= 0:
-                print("‼ El valor debe ser mayor a Cero ( 0 ).")
+                printOnConsole("El valor debe ser mayor a Cero ( 0 ).", "w")
             else:
                 is_error = False
         except ValueError as verr:
-            print("‼ El valor ingresado no es númerico.")
+            printOnConsole("El valor ingresado no es númerico.", "w")
 
     return num
 
@@ -192,7 +193,7 @@ def main():
         rpt = service.getStatus()
         printStatusResponse(rpt)
     except(KeyboardInterrupt, EOFError):
-        print("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
+        printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
 
 
 if __name__ == '__main__':
