@@ -1,6 +1,7 @@
 from DAO import Empresa, ClaveSol, TipoDocumento
 from SUNATServiceClient import SUNATServiceClient
-from helpers import (lineSeparator,
+from helpers import (clearConsole,
+                     lineSeparator,
                      printInputValues,
                      getConfigData,
                      checkIfConfigFilesExists,
@@ -164,9 +165,18 @@ def getInputNumeroDoc(str_msg):
     return num
 
 
+def printStatusResponse(data_rpt):
+    data = [
+        ["Status Code", data_rpt.statusCode],
+        ["Status Message", data_rpt.statusMessage]
+    ]
+    printSingleTable(data, " Respuesta: ", False)
+
+
 def main():
 
     try:
+        clearConsole()
         checkIfConfigFilesExists()
 
         empresa = getInputEmpresa("Empresa: ")
@@ -181,9 +191,10 @@ def main():
             numero
         )
         
-        service.getStatus()
+        rpt = service.getStatus()
+        printStatusResponse(rpt)
     except(KeyboardInterrupt, EOFError):
-        print("\n[  PROGRAMA FINALIZADO  ]")
+        print("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
 
 
 if __name__ == '__main__':

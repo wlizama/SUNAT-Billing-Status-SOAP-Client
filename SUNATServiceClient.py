@@ -57,10 +57,11 @@ class SUNATServiceClient():
             print("Error al establecer la conección")
             raise
 
-    @Halo(text="Consultando ando ...", spinner="clock")
+    @Halo(text="Consultando ando ...", spinner="dots")
     def getStatus(self):
         self.connect()
         
+        response = None
         try:
             response = self.client.service.getStatus(
                 self.empresa.ruc,
@@ -68,15 +69,8 @@ class SUNATServiceClient():
                 self.serie,
                 self.numero
             )
-
-            print(self._getFormatResponse(response))
         except (ConnectionResetError, ConnectionError):
             print("Sucedió un error en método getStatus")
             raise
-
-    def _getFormatResponse(self, response):
-        return """\
-        \nRespuesta:\
-        \n  Status Code: {0}\
-        \n  Status Message: {1}
-        """.format(response.statusCode, response.statusMessage)
+        
+        return response

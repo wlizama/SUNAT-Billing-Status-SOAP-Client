@@ -62,10 +62,11 @@ def clearConsole():
     os.system(clear_command)
 
 
-def printSingleTable(data, title):
+def printSingleTable(data, title, heading_row=True):
     try:
         table = SingleTable(data)
         table.title = title
+        table.inner_heading_row_border = heading_row
         print(table.table)
     except:
         print("Sucedió un error imprimiendo datos en tabla.")
