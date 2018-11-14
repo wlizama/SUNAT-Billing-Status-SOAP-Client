@@ -124,7 +124,7 @@ def getInputSerieDoc(str_msg):
         else:
             is_error = False
     
-    return str_input
+    return str_input.upper()
 
 
 @printInputValues
@@ -147,21 +147,24 @@ def getInputNumeroDoc(str_msg):
 
 def main():
 
-    checkIfConfigFilesExists()
+    try:
+        checkIfConfigFilesExists()
 
-    empresa = getInputEmpresa("Empresa: ")
-    tipo_doc = getInputTipoDoc("Tipo de Documento: ")
-    serie = getInputSerieDoc("Serie: ").upper()
-    numero = getInputNumeroDoc("Número: ")
+        empresa = getInputEmpresa("Empresa: ")
+        tipo_doc = getInputTipoDoc("Tipo de Documento: ")
+        serie = getInputSerieDoc("Serie: ")
+        numero = getInputNumeroDoc("Número: ")
 
-    service = SUNATServiceClient(
-        empresa,
-        tipo_doc,
-        serie,
-        numero
-    )
-    
-    service.getStatus()
+        service = SUNATServiceClient(
+            empresa,
+            tipo_doc,
+            serie,
+            numero
+        )
+        
+        service.getStatus()
+    except(KeyboardInterrupt, EOFError):
+        print("\n[  PROGRAMA FINALIZADO  ]")
 
 
 if __name__ == '__main__':
