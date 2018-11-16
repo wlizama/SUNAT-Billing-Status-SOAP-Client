@@ -91,6 +91,20 @@ def printOnConsole(str, type=""):
     print(colored(str, color))
 
 
+def saveBinaryFile(bin_source, path, name):
+    full_path = ""
+    try:
+        full_path = os.path.join(path, name)
+
+        with open(full_path, "wb") as file:
+            file.write(bin_source)
+    except:
+        print("Sucedió un error al crear el archivo CDR")
+        exit()
+    
+    return full_path
+
+
 def preInit():
     clearConsole()
     checkIfConfigFilesExists()

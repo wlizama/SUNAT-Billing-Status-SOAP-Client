@@ -6,7 +6,8 @@ from helpers import (preInit,
                      checkIfConfigFilesExists,
                      fullMatchRExp,
                      printSingleTable,
-                     printOnConsole)
+                     printOnConsole,
+                     saveBinaryFile)
 
 
 def getListaEmpresas():
@@ -165,12 +166,42 @@ def getInputNumeroDoc(str_msg):
     return num
 
 
-def printStatusResponse(data_rpt):
+def getStatus(service):
+    rpt = service.getStatus()
     data = [
-        ["Status Code", data_rpt.statusCode],
-        ["Status Message", data_rpt.statusMessage]
+        ["Code", rpt.statusCode],
+        ["Message", rpt.statusMessage]
     ]
-    printSingleTable(data, " Respuesta: ", False)
+    printSingleTable(data, " Respuesta Status: ", False)
+
+
+def getStatusCDR(service):
+
+    cdr_name_file = "R-{}-{}-{}-{:08d}.zip".format(
+        service.empresa.ruc,
+        service.tipo_doc.codigo,
+        service.serie,
+        service.numero,
+    )
+
+    rpt = service.getStatusCdr()
+    paths = getConfigData("paths")["paths"]
+    full_path = ""
+
+    if rpt.content:
+        full_path = saveBinaryFile(
+            rpt.content, paths["destino_CDR_file"],
+            cdr_name_file)
+
+    data = [
+        ["Code", rpt.statusCode],
+        ["Message", rpt.statusMessage],
+    ]
+
+    if rpt.content:
+        data.append(["Ubicación", full_path])
+
+    printSingleTable(data, " Respuesta CDR: ", False)
 
 
 def main():
@@ -189,9 +220,9 @@ def main():
             serie,
             numero
         )
-        
-        rpt = service.getStatus()
-        printStatusResponse(rpt)
+
+        getStatus(service)
+        getStatusCDR(service)
     except(KeyboardInterrupt, EOFError):
         printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
 
