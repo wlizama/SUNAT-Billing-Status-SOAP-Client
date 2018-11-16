@@ -12,7 +12,8 @@ init()
 
 _CONFIG_FILES = {
     "empresas": "./config/empresas.json",
-    "tipos_docs": "./config/tipos_docs.json"
+    "tipos_docs": "./config/tipos_docs.json",
+    "paths": "./config/paths.json"
 }
 
 _LINE_SEPARADOR = "-"
