@@ -8,7 +8,7 @@ from helpers import (preInit,
                      printSingleTable,
                      printOnConsole,
                      saveBinaryFile)
-
+import argparse
 
 def getListaEmpresas():
 
@@ -209,6 +209,13 @@ def main():
     try:
         preInit()
 
+
+        parser = argparse.ArgumentParser(description="Programita")
+        parser.add_argument('--status', "-s", action='store_true', help="Variable booleana")
+        parser.add_argument('--cdr', "-c", action='store_true', help="Variable booleana")
+        args = parser.parse_args()
+
+
         empresa = getInputEmpresa("Empresa: ")
         tipo_doc = getInputTipoDoc("Tipo de Documento: ")
         serie = getInputSerieDoc("Serie: ")
@@ -221,8 +228,16 @@ def main():
             numero
         )
 
-        getStatus(service)
-        getStatusCDR(service)
+        if not args.status and not args.cdr:
+            getStatus(service)
+            getStatusCDR(service)
+        else:
+            if args.status:
+                getStatus(service)
+            
+            if args.cdr:
+                getStatusCDR(service)
+
     except(KeyboardInterrupt, EOFError):
         printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
 
