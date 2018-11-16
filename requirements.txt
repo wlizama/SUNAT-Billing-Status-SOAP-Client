@@ -16,7 +16,6 @@ log-symbols==0.0.11
 lxml==4.2.5
 macholib==1.11
 pefile==2018.8.8
-PyInstaller==3.4
 pytz==2018.7
 pywin32-ctypes==0.2.0
 requests==2.20.0
