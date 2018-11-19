@@ -210,9 +210,18 @@ def main():
         preInit()
 
 
-        parser = argparse.ArgumentParser(description="Programita")
-        parser.add_argument('--status', "-s", action='store_true', help="Variable booleana")
-        parser.add_argument('--cdr', "-c", action='store_true', help="Variable booleana")
+        parser = argparse.ArgumentParser(
+            description="Consulta status de documento en SUNAT y obtiene archivo CDR")
+        parser.add_argument(
+            '--status',
+            "-s",
+            action='store_true',
+            help="Solo consultar estado de documento")
+        parser.add_argument(
+            '--cdr',
+            "-c",
+            action='store_true',
+            help="Solo consultar archivo CDR y almacenarlo según configuración")
         args = parser.parse_args()
 
 
