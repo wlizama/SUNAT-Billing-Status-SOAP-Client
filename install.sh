@@ -1,0 +1,1 @@
+pyinstaller --clean -n sbsSOAP --add-data "./config/empresas.sample.json;config" --add-data "./config/paths.json;config" --add-data "./config/tipos_docs.json;config" __main__.py
