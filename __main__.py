@@ -206,50 +206,66 @@ def getStatusCDR(service):
 
 def main():
 
-    try:
-        preInit()
+    preInit()
 
+    parser = argparse.ArgumentParser(
+        description="Consulta status de documento en SUNAT y obtiene archivo CDR")
+    parser.add_argument(
+        '--status',
+        "-s",
+        action='store_true',
+        help="Solo consultar estado de documento")
+    parser.add_argument(
+        '--cdr',
+        "-c",
+        action='store_true',
+        help="Solo consultar archivo CDR y almacenarlo según configuración")
+    args = parser.parse_args()
 
-        parser = argparse.ArgumentParser(
-            description="Consulta status de documento en SUNAT y obtiene archivo CDR")
-        parser.add_argument(
-            '--status',
-            "-s",
-            action='store_true',
-            help="Solo consultar estado de documento")
-        parser.add_argument(
-            '--cdr',
-            "-c",
-            action='store_true',
-            help="Solo consultar archivo CDR y almacenarlo según configuración")
-        args = parser.parse_args()
+    empresa = getInputEmpresa("Empresa: ")
+    tipo_doc = getInputTipoDoc("Tipo de Documento: ")
+    serie = getInputSerieDoc("Serie: ")
+    numero = getInputNumeroDoc("Número: ")
 
+    service = SUNATServiceClient(
+        empresa,
+        tipo_doc,
+        serie,
+        numero
+    )
 
-        empresa = getInputEmpresa("Empresa: ")
-        tipo_doc = getInputTipoDoc("Tipo de Documento: ")
-        serie = getInputSerieDoc("Serie: ")
-        numero = getInputNumeroDoc("Número: ")
-
-        service = SUNATServiceClient(
-            empresa,
-            tipo_doc,
-            serie,
-            numero
-        )
-
-        if not args.status and not args.cdr:
+    if not args.status and not args.cdr:
+        getStatus(service)
+        getStatusCDR(service)
+    else:
+        if args.status:
             getStatus(service)
+        
+        if args.cdr:
             getStatusCDR(service)
-        else:
-            if args.status:
-                getStatus(service)
-            
-            if args.cdr:
-                getStatusCDR(service)
-
-    except(KeyboardInterrupt, EOFError):
-        printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
 
 
 if __name__ == '__main__':
-    main()
+
+    options_continuar = ["s", "n"]  # SI, NO
+    continuar_ejec = True
+    continuar_preg = True
+
+    try:
+        while continuar_ejec:
+            continuar_ejec = True
+            continuar_preg = True
+            main()
+
+            input_cont = ""
+            while continuar_preg:
+                input_cont = str(input("Desea realizar otra consulta? [ {} ]: "
+                                    .format(" / ".join(options_continuar)))).lower()
+                continuar_preg = True if input_cont not in options_continuar else False
+            
+            continuar_ejec = True if input_cont == options_continuar[0] else False
+    
+    except(KeyboardInterrupt, EOFError):
+        continuar_ejec = False
+        continuar_preg = False
+        printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
