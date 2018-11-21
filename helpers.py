@@ -20,6 +20,8 @@ _LINE_SEPARADOR = "-"
 
 _str_inputs = []
 
+_opts_continuar = ["s", "n"]  # SI, NO
+
 
 def lineSeparator(len):
     return _LINE_SEPARADOR * len
@@ -108,3 +110,28 @@ def saveBinaryFile(bin_source, path, name):
 def preInit():
     clearConsole()
     checkIfConfigFilesExists()
+
+
+def executeOnBucle(func):
+
+    def preguntar():
+        try:
+            rpt = str(input("Desea realizar otra consulta? [ {} ]: "
+                            .format(" / ".join(_opts_continuar)))).lower()
+            return rpt
+        except(KeyboardInterrupt, EOFError, AttributeError):
+            printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
+            exit()
+
+    def wrapper():
+        respuesta = "s"
+        while respuesta == _opts_continuar[0]:
+            func()
+
+            respuesta = preguntar()
+            while respuesta not in _opts_continuar:
+                respuesta = preguntar()
+
+            _str_inputs.clear()
+
+    return wrapper

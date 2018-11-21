@@ -7,7 +7,8 @@ from helpers import (preInit,
                      fullMatchRExp,
                      printSingleTable,
                      printOnConsole,
-                     saveBinaryFile)
+                     saveBinaryFile,
+                     executeOnBucle)
 import argparse
 
 def getListaEmpresas():
@@ -204,6 +205,7 @@ def getStatusCDR(service):
     printSingleTable(data, " Respuesta CDR: ", False)
 
 
+@executeOnBucle
 def main():
 
     preInit()
@@ -247,25 +249,7 @@ def main():
 
 if __name__ == '__main__':
 
-    options_continuar = ["s", "n"]  # SI, NO
-    continuar_ejec = True
-    continuar_preg = True
-
     try:
-        while continuar_ejec:
-            continuar_ejec = True
-            continuar_preg = True
-            main()
-
-            input_cont = ""
-            while continuar_preg:
-                input_cont = str(input("Desea realizar otra consulta? [ {} ]: "
-                                    .format(" / ".join(options_continuar)))).lower()
-                continuar_preg = True if input_cont not in options_continuar else False
-            
-            continuar_ejec = True if input_cont == options_continuar[0] else False
-    
-    except(KeyboardInterrupt, EOFError):
-        continuar_ejec = False
-        continuar_preg = False
+        main()
+    except(KeyboardInterrupt, EOFError, AttributeError):
         printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
