@@ -1,3 +1,7 @@
+"""Funciones de ayuda al programa principal
+
+Funciones independientes de la aplicación
+"""
 import json
 import os
 import platform
@@ -114,7 +118,21 @@ def clearConsole():
     os.system(clear_command)
 
 
+# Mostrar datos en formato de tabla
 def printSingleTable(data, title, heading_row=True):
+    """Imprimir datos en formato de tabla con título
+
+    Parameters
+    ----------
+    data: array
+        Datos a imprimir
+    title: str
+        titulo de tabla
+    heading_row: bool
+        (Default: True) Si es verdadero se considera la primera fila como el
+        encabezado de la tabla
+
+    """
     try:
         table = SingleTable(data)
         table.title = title
@@ -125,7 +143,21 @@ def printSingleTable(data, title, heading_row=True):
         exit()
 
 
+# Imprimir en consola un mensaje a color según tipo
 def printOnConsole(str, type=""):
+    """Muestra en consola un mensaje de diferente color segun el tipo
+
+    Parameters
+    ----------
+    str: str
+        mensaje a mostrar
+    type: str
+        define el tipo de mensaje
+        "" : (Default) color blanco
+        "w": warnining color amarillo
+        "i": info color azul
+        "e": error color rojo
+    """
     color = "white"
     if type.lower() == "w":
         color = "yellow"
@@ -137,7 +169,24 @@ def printOnConsole(str, type=""):
     print(colored(str, color))
 
 
+# guardar archivo desde datos binarios
 def saveBinaryFile(bin_source, path, name):
+    """Recibe datos binarios y los guarda como archivo
+
+    Parameters
+    ----------
+    bin_source: bin
+        Datos en binario a guardar
+    path: str
+        Ruta para ubicación de archivo
+    name: str
+        nombre de archivo a guardar
+
+    Returns
+    -------
+    str
+        ruta de ubicación final de archivo
+    """
     full_path = ""
     try:
         full_path = os.path.join(path, name)
@@ -151,13 +200,20 @@ def saveBinaryFile(bin_source, path, name):
     return full_path
 
 
+# acciones antes de ejecutar
 def preInit():
+    """Ejecuta tareas antes de iniciar programa"""
     clearConsole()
     checkIfConfigFilesExists()
 
 
+# @Decorador
+# Ejecutar funcion en bucle segun peticion de confirmacion
 def executeOnBucle(func):
+    """Ejecuta función en un ciclo preguntando si desea seguir ejecutando"""
 
+    # funcion que pregunta se desea seguir ejecutando
+    # controla excepción si es interrumpida por usuario
     def preguntar():
         try:
             rpt = str(input("Desea realizar otra consulta? [ {} ]: "
@@ -167,6 +223,7 @@ def executeOnBucle(func):
             printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
             exit()
 
+    # ejecutar ciclo y limpiar cadena inputs
     def wrapper():
         respuesta = "s"
         while respuesta == _opts_continuar[0]:
