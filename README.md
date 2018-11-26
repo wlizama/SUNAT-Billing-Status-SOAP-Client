@@ -8,7 +8,7 @@ Cliente para consultar estado y CDR de documentos electrónicos declarados a [SU
 ![demo](./art/demo.v1.5.0.gif)
 
 
-## Dependencias
+## Requerimientos
 
 - [Python 3.7.0](https://www.python.org/downloads/release/python-370/)
 - [Virtualenv](https://virtualenv.pypa.io/en/latest/)
@@ -16,16 +16,29 @@ Cliente para consultar estado y CDR de documentos electrónicos declarados a [SU
 - Dependecias definidas en archivo ``requirements.txt``
 
 
-## Instalación
+## Instalación dependencias
+
+- Se debe cumplir con todos los requerimientos mencionados
 
 ```sh
     $ pip install -r requirements.txt
 ```
 
 
+## Instalación de ejecutable
+
+- Se debe cumplir con todas las dependencias y requerimientos mencionados
+
+- Ejecutar entorno virtual
+
+- Abrir la consola de comandos y ejecutar el script ``install.sh`` esto creará la carpeta ``./dist`` con el ejecutable y carpetas necesarias para su ejecución
+
+- En **windows** el ejecutable se llama ``sbsSOAP.exe`` doble click y probar !
+
+
 ## Modo de Uso
 
-- Se debe cumplir con las dependencias mencionadas.
+- Se debe cumplir con todas las dependencias y requerimientos mencionados
 
 - Ejecutar ``python __main__.py`` dentro del entorno virtual e ingresar datos solicitados.
 
