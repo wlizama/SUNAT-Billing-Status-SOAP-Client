@@ -5,7 +5,7 @@ Cliente para consultar estado y CDR de documentos electrónicos declarados a [SU
 
 ## Demo
 
-![demo](./art/demo.gif)
+![demo](./art/demo.v1.5.0.gif)
 
 
 ## Dependencias

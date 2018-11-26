@@ -7,7 +7,8 @@ from helpers import (preInit,
                      fullMatchRExp,
                      printSingleTable,
                      printOnConsole,
-                     saveBinaryFile)
+                     saveBinaryFile,
+                     executeOnBucle)
 import argparse
 
 def getListaEmpresas():
@@ -204,52 +205,51 @@ def getStatusCDR(service):
     printSingleTable(data, " Respuesta CDR: ", False)
 
 
+@executeOnBucle
 def main():
 
-    try:
-        preInit()
+    preInit()
 
+    parser = argparse.ArgumentParser(
+        description="Consulta status de documento en SUNAT y obtiene archivo CDR")
+    parser.add_argument(
+        '--status',
+        "-s",
+        action='store_true',
+        help="Solo consultar estado de documento")
+    parser.add_argument(
+        '--cdr',
+        "-c",
+        action='store_true',
+        help="Solo consultar archivo CDR y almacenarlo según configuración")
+    args = parser.parse_args()
 
-        parser = argparse.ArgumentParser(
-            description="Consulta status de documento en SUNAT y obtiene archivo CDR")
-        parser.add_argument(
-            '--status',
-            "-s",
-            action='store_true',
-            help="Solo consultar estado de documento")
-        parser.add_argument(
-            '--cdr',
-            "-c",
-            action='store_true',
-            help="Solo consultar archivo CDR y almacenarlo según configuración")
-        args = parser.parse_args()
+    empresa = getInputEmpresa("Empresa: ")
+    tipo_doc = getInputTipoDoc("Tipo de Documento: ")
+    serie = getInputSerieDoc("Serie: ")
+    numero = getInputNumeroDoc("Número: ")
 
+    service = SUNATServiceClient(
+        empresa,
+        tipo_doc,
+        serie,
+        numero
+    )
 
-        empresa = getInputEmpresa("Empresa: ")
-        tipo_doc = getInputTipoDoc("Tipo de Documento: ")
-        serie = getInputSerieDoc("Serie: ")
-        numero = getInputNumeroDoc("Número: ")
-
-        service = SUNATServiceClient(
-            empresa,
-            tipo_doc,
-            serie,
-            numero
-        )
-
-        if not args.status and not args.cdr:
+    if not args.status and not args.cdr:
+        getStatus(service)
+        getStatusCDR(service)
+    else:
+        if args.status:
             getStatus(service)
+        
+        if args.cdr:
             getStatusCDR(service)
-        else:
-            if args.status:
-                getStatus(service)
-            
-            if args.cdr:
-                getStatusCDR(service)
-
-    except(KeyboardInterrupt, EOFError):
-        printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
 
 
 if __name__ == '__main__':
-    main()
+
+    try:
+        main()
+    except(KeyboardInterrupt, EOFError, AttributeError):
+        printOnConsole("\n[  PROGRAMA FINALIZADO POR EL USUARIO  ]")
