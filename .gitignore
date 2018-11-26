@@ -3,3 +3,6 @@ venv/
 config/empresas.json
 CDRFiles/
 .vscode/
+build/
+dist/
+*.spec
