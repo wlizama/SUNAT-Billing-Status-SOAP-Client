@@ -1,10 +1,24 @@
+"""Clases para objetos relacionados a consulta SUNAT
+"""
+
 class Empresa():
-    
+
     def __init__(self, razon_social, ruc, clave_sol):
+        """
+        Parameters
+        ----------
+        razon_social: str
+            Razón Social que identifique a la empresa
+        ruc: str
+            RUC unico de empresa a cosultar
+        clave_sol: DAO.ClaveSol
+            contraseña de acceso a portal de SUNAT
+        """
         self._razon_social = razon_social
         self._ruc = ruc
         self._clave_sol = clave_sol
 
+    # setters y getters
     @property
     def razon_social(self):
         return self._razon_social
@@ -36,9 +50,18 @@ class Empresa():
 class ClaveSol():
 
     def __init__(self, usuario, contrasenha):
+        """
+        Parameters
+        ----------
+        usuario: str
+            Usuario de acceso al portal SUNAT
+        contrasenha: str
+            Contraseña de acceso al portal SUNAT
+        """
         self._usuario = usuario
         self._contrasenha = contrasenha
 
+    # setters y getters
     @property
     def usuario(self):
         return self._usuario
@@ -58,9 +81,18 @@ class ClaveSol():
 
 class TipoDocumento():
     def __init__(self, codigo, descripcion):
+        """
+        Parameters
+        ----------
+        codigo: str
+            Codigo unico del tipo de documento. Ejm: 07
+        descripcion: str
+            Descripción del documento
+        """
         self._codigo = codigo
         self._descripcion = descripcion
 
+    # setters y getters
     @property
     def codigo(self):
         return self._codigo
