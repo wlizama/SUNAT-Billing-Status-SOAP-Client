@@ -1,17 +1,34 @@
+"""Clase para consultas a SOAP a SUNAT
+"""
+
 import zeep
 from zeep.wsse.username import UsernameToken
 from halo import Halo
 
 class SUNATServiceClient():
+    # Direccion de servicio SUNAT
     _SUNAT_SOAP_WSDL = "https://www.sunat.gob.pe/ol-it-wsconscpegem/billConsultService?wsdl"
     client = None
 
     def __init__(self, empresa, tipo_doc, serie, numero):
+        """
+        Parameters
+        ----------
+        empresa: DAO.Empresa
+            Empresa con la que se realiza la consulta
+        tipo_doc: DAO.TipoDocumento
+            Tipo de documento a consultar
+        serie: str
+            serie de documento a consultar. Ejm: F033
+        numero: int
+            número de documento documento a consultar
+        """
         self._empresa = empresa
         self._tipo_doc = tipo_doc
         self._serie = serie
         self._numero = numero
 
+    # setters y getters
     @property
     def empresa(self):
         return self._empresa
@@ -45,6 +62,9 @@ class SUNATServiceClient():
         self._numero = value
 
     def connect(self):
+        """Establecer conección al servicio con las credenciales de acceso.
+        Lanza una excepcion en caso de error
+        """
         try:
             token_user = "{}{}".format(self.empresa.ruc, self.empresa.clave_sol.usuario)
             token_password = self.empresa.clave_sol.contrasenha
@@ -60,6 +80,9 @@ class SUNATServiceClient():
 
     @Halo(text="Consultando status ...", spinner="dots3")
     def getStatus(self):
+        """Metódo para consultar estado de documento
+        Lanza excepción por error en consulta
+        """
         self.connect()
         
         response = None
@@ -79,6 +102,9 @@ class SUNATServiceClient():
 
     @Halo(text="Consultando CDR ...", spinner="dots9")
     def getStatusCdr(self):
+        """Metódo para consultar CDR de documento
+        Lanza excepción por error en consulta
+        """
         self.connect()
         
         response = None
