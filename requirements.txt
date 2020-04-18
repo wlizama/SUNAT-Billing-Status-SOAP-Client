@@ -10,7 +10,7 @@ colorama==0.3.9
 cursor==1.2.0
 cx-Oracle==7.3.0
 defusedxml==0.5.0
-Flask==1.0.2
+Flask==1.1.1
 future==0.17.1
 halo==0.0.22
 idna==2.7
