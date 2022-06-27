@@ -30,7 +30,7 @@ PyInstaller==3.5
 pylint==2.1.1
 pytz==2018.7
 pywin32-ctypes==0.2.0
-reportlab==3.5.1
+reportlab==3.5.55
 requests==2.22.0
 requests-toolbelt==0.8.0
 six==1.11.0
